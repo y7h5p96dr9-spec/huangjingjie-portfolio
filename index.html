@@ -310,6 +310,7 @@
       inset: 0;
       background: linear-gradient(180deg, rgba(0, 0, 0, .04), rgba(0, 0, 0, .72));
       pointer-events: none;
+      display: none;
     }
 
     .hover-label {
@@ -342,6 +343,14 @@
       box-shadow: 0 16px 44px rgba(0, 0, 0, .42);
       font-size: 30px;
       padding-left: 4px;
+      cursor: pointer;
+      transition: opacity .2s ease, transform .2s ease;
+      display: none;
+    }
+
+    .hero-player.is-playing .play-button {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.92);
       pointer-events: none;
     }
 
@@ -351,6 +360,7 @@
       left: 12px;
       right: 12px;
       bottom: 11px;
+      display: none;
     }
 
     .player-tags {
@@ -969,8 +979,8 @@
         </div>
 
         <div class="hero-player">
-          <video class="hover-video" muted loop playsinline controls preload="metadata" src="assets/dahua-lite-upload.webm"></video>
-          <div class="hover-label">Hover 静音预览 3-5 秒</div>
+          <video class="hover-video" muted loop playsinline controls preload="none" poster="assets/poster-dahua.jpg" src="assets/dahua-lite-upload.webm"></video>
+          <div class="hover-label">点击视频控件播放</div>
           <div class="play-button">▶</div>
           <div class="player-bottom">
             <div class="player-tags">
@@ -1057,7 +1067,7 @@
         <div>
           <h3>先看成片</h3>
           <p>鼠标放到视频上就能预览，不用先跳页面。默认静音，适合快速扫一遍作品。</p>
-          <div class="mini-preview"><video class="hover-video" muted loop playsinline preload="metadata" src="assets/dahua-lite-upload.webm"></video></div>
+          <div class="mini-preview"><video class="hover-video" muted loop playsinline preload="none" poster="assets/poster-dahua.jpg" src="assets/dahua-lite-upload.webm"></video></div>
         </div>
       </div>
 
@@ -1118,20 +1128,13 @@
     window.addEventListener("resize", fitBoard);
     fitBoard();
 
-    document.querySelectorAll(".hover-video").forEach((video) => {
-      video.addEventListener("mouseenter", () => {
-        video.muted = true;
-        video.play().catch(() => {});
-      });
-      video.addEventListener("mouseleave", () => video.pause());
-    });
-
     const projectGrid = document.querySelector("#projectGrid");
     const roleProjects = {
       aigc: [
         {
           title: "大话西游 AIGC 完整成片",
           src: "assets/dahua-lite-upload.webm",
+          poster: "assets/poster-dahua.jpg",
           desc: "完整展示从 AI 素材生成、素材筛选到剪辑包装的内容生产链路。",
           tags: ["Prompt", "AI素材", "剪辑重组"],
           metrics: ["完整成片", "游戏 IP", "主推"],
@@ -1140,6 +1143,7 @@
         {
           title: "第五人格系列内容",
           src: "assets/identityv-lite-upload.webm",
+          poster: "assets/poster-identityv.jpg",
           desc: "7 集连续内容，突出 AIGC 角色叙事、系列生产和稳定交付。",
           tags: ["系列内容", "AIGC", "角色叙事"],
           metrics: ["7 集", "连续内容", "稳定交付"],
@@ -1148,6 +1152,7 @@
         {
           title: "大话西游片段池",
           src: "assets/我靠百分百概率在游戏封神_ep1_batch4_480p.mp4",
+          poster: "assets/poster-dahua.jpg",
           desc: "展示素材拆分、片段筛选和从局部素材到完整成片的组织能力。",
           tags: ["素材筛选", "片段池", "成片整合"],
           metrics: ["10 段", "480p", "过程素材"],
@@ -1158,6 +1163,7 @@
         {
           title: "大话西游完整成片剪辑",
           src: "assets/dahua-lite-upload.webm",
+          poster: "assets/poster-dahua.jpg",
           desc: "重点展示镜头组织、节奏重构、字幕配乐和完整交付能力。",
           tags: ["节奏重构", "字幕包装", "配乐"],
           metrics: ["完整成片", "剪辑包装", "交付"],
@@ -1166,6 +1172,7 @@
         {
           title: "大话西游片段剪辑样本",
           src: "assets/我靠百分百概率在游戏封神_ep1_batch8_480p.mp4",
+          poster: "assets/poster-dahua.jpg",
           desc: "用短片段展示单段素材的节奏处理和画面衔接方式。",
           tags: ["短片段", "画面衔接", "节奏"],
           metrics: ["3-5 秒预览", "片段剪辑", "轻量"],
@@ -1185,6 +1192,7 @@
         {
           title: "率土短视频精选",
           src: "assets/sttl-lite-upload.webm",
+          poster: "assets/poster-sttl.jpg",
           desc: "突出策略游戏叙事、玩家代入感和游戏短视频节奏。",
           tags: ["游戏 IP", "玩家视角", "节奏剪辑"],
           metrics: ["短视频", "策略游戏", "节奏"],
@@ -1193,6 +1201,7 @@
         {
           title: "第五人格系列内容",
           src: "assets/identityv-lite-upload.webm",
+          poster: "assets/poster-identityv.jpg",
           desc: "用连续内容展示角色叙事、游戏 IP 包装和系列化产出。",
           tags: ["第五人格", "系列内容", "角色叙事"],
           metrics: ["7 集", "连续内容", "IP 包装"],
@@ -1201,6 +1210,7 @@
         {
           title: "CS 短视频补充",
           src: "assets/cs-lite-upload.webm",
+          poster: "assets/poster-cs.jpg",
           desc: "补充动作类游戏题材，展示不同游戏类型的画面节奏适配。",
           tags: ["动作节奏", "补充作品", "游戏短视频"],
           metrics: ["CS", "短视频", "题材覆盖"],
@@ -1229,6 +1239,7 @@
         {
           title: "赛事内容素材补充",
           src: "assets/field-video-lite-upload.webm",
+          poster: "assets/poster-field-video.jpg",
           desc: "用视频补充现场内容观感，和前两张图片一起形成“到场 + 环境 + 内容”的证据链。",
           tags: ["视频素材", "现场感", "内容补充"],
           metrics: ["短视频", "补充", "节奏"],
@@ -1241,11 +1252,14 @@
       scope.querySelectorAll(".hover-video").forEach((video) => {
         video.addEventListener("mouseenter", () => {
           video.muted = true;
+          video.load();
           video.play().catch(() => {});
         });
         video.addEventListener("mouseleave", () => video.pause());
       });
     }
+
+    bindHoverVideos(document);
 
     function renderProjects(role) {
       projectGrid.innerHTML = roleProjects[role].map((item) => `
@@ -1256,7 +1270,7 @@
               ? `<img src="${item.src}" alt="${item.title}">`
               : item.type === "link"
                 ? `<div class="link-cover">柳州二中<br>高考加油宣传片<br><span style="color:#76a7ff;font-size:12px;">微信公众号作品链接</span></div>`
-              : `<video class="hover-video" muted loop playsinline preload="metadata" src="${item.src}"></video>`
+              : `<video class="hover-video" muted loop playsinline preload="none" poster="${item.poster || ""}" src="${item.src}"></video>`
           }</div>
           <div class="project-body">
             <h3>${item.title}</h3>
