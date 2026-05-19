@@ -1,0 +1,1356 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>黄敬杰作品集设计板</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-0: #050910;
+      --bg-1: #08111d;
+      --panel: rgba(11, 19, 31, .88);
+      --panel-solid: #0d1724;
+      --panel-soft: #121f30;
+      --line: rgba(142, 166, 204, .18);
+      --line-strong: rgba(142, 166, 204, .34);
+      --text: #f7faff;
+      --soft: #d6e0ef;
+      --muted: #94a5bb;
+      --dim: #65768d;
+      --blue: #4778ff;
+      --blue-2: #76a7ff;
+      --mint: #66e0b8;
+      --violet: #8c7cff;
+      --shadow: 0 28px 90px rgba(0, 0, 0, .48);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 9% 19%, rgba(71, 120, 255, .28), transparent 22%),
+        radial-gradient(circle at 80% 10%, rgba(102, 224, 184, .13), transparent 24%),
+        radial-gradient(circle at 50% 92%, rgba(71, 120, 255, .12), transparent 30%),
+        linear-gradient(135deg, #03070d, #08111d 48%, #050910);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .viewport {
+      width: min(100vw, 1600px);
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .screen {
+      width: 1600px;
+      min-height: 100vh;
+      padding: 24px 18px 28px;
+      display: grid;
+      grid-template-columns: 190px 1010px 330px;
+      gap: 20px;
+      transform-origin: top left;
+      transform: scale(var(--board-scale, 1));
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(13, 23, 36, .88), rgba(8, 15, 25, .88));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .profile {
+      align-self: start;
+      margin-top: 24px;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      position: relative;
+      z-index: 12;
+      transform: translateY(var(--profile-offset, 0px));
+    }
+
+    .profile.dragging {
+      cursor: grabbing;
+      z-index: 80;
+      box-shadow: 0 34px 100px rgba(0, 0, 0, .58), 0 0 0 1px rgba(71, 120, 255, .45);
+      transition: none;
+    }
+
+    .photo-wrap {
+      margin: 12px;
+      height: 176px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #111c2b;
+    }
+
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .profile-body {
+      padding: 0 16px 18px;
+    }
+
+    .profile-name {
+      margin: 2px 0 5px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .profile-role {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .contact-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .contact-list div {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 6px;
+      align-items: start;
+    }
+
+    .download {
+      height: 38px;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(71, 120, 255, .72);
+      background: linear-gradient(180deg, rgba(71, 120, 255, .18), rgba(71, 120, 255, .08));
+      color: #c9d8ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .save-note {
+      text-align: center;
+      color: var(--dim);
+      font-size: 11px;
+      margin-top: 10px;
+    }
+
+    .main-board {
+      border-radius: 14px;
+      overflow: hidden;
+      min-height: 940px;
+    }
+
+    .topbar {
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 8, 14, .62);
+    }
+
+    .brand {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      margin-left: 8px;
+      color: var(--blue-2);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: flex;
+      gap: 42px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+
+    .nav a {
+      position: relative;
+      opacity: .82;
+    }
+
+    .nav a.active {
+      opacity: 1;
+    }
+
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -18px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--blue);
+      box-shadow: 0 0 14px rgba(71, 120, 255, .8);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 520px;
+      gap: 32px;
+      align-items: center;
+      padding: 28px 34px 18px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 58px;
+      line-height: .98;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 16px 45px rgba(0, 0, 0, .38);
+    }
+
+    .hero-subtitle {
+      margin-top: 16px;
+      color: var(--soft);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .hero-subtitle b {
+      color: var(--blue-2);
+    }
+
+    .hero-copy {
+      width: 390px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      height: 42px;
+      min-width: 132px;
+      border-radius: 8px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255, 255, 255, .04);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #3869ff, #5b88ff);
+      border-color: rgba(115, 153, 255, .9);
+      box-shadow: 0 14px 36px rgba(71, 120, 255, .32);
+      font-weight: 900;
+    }
+
+    .hero-player {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      background: #05080e;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .45);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+      background: #05080e;
+    }
+
+    .hero-player video {
+      height: 270px;
+      object-fit: contain;
+    }
+
+    .hero-player::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, .04), rgba(0, 0, 0, .72));
+      pointer-events: none;
+    }
+
+    .hover-label {
+      position: absolute;
+      z-index: 2;
+      top: 12px;
+      left: 12px;
+      padding: 8px 11px;
+      border-radius: 7px;
+      background: rgba(51, 88, 215, .94);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .32);
+    }
+
+    .play-button {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 74px;
+      height: 74px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .55);
+      background: rgba(5, 9, 16, .68);
+      box-shadow: 0 16px 44px rgba(0, 0, 0, .42);
+      font-size: 30px;
+      padding-left: 4px;
+      pointer-events: none;
+    }
+
+    .player-bottom {
+      position: absolute;
+      z-index: 2;
+      left: 12px;
+      right: 12px;
+      bottom: 11px;
+    }
+
+    .player-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .player-tag {
+      padding: 7px 9px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(5, 9, 16, .72);
+      color: var(--soft);
+      font-size: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .player-control {
+      height: 26px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+
+    .timeline {
+      flex: 1;
+      height: 3px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .25);
+      overflow: hidden;
+    }
+
+    .timeline span {
+      display: block;
+      width: 42%;
+      height: 100%;
+      background: var(--blue);
+    }
+
+    .role-line {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 0 34px 18px;
+    }
+
+    .bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 0 0 6px rgba(71, 120, 255, .14);
+      font-size: 13px;
+    }
+
+    .role-label {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .role-switch {
+      width: 620px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line-strong);
+      border-radius: 9px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .role-btn {
+      height: 38px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .role-btn:last-child { border-right: 0; }
+
+    .role-btn.active {
+      color: #fff;
+      background: rgba(71, 120, 255, .22);
+      box-shadow: inset 0 0 0 1px rgba(71, 120, 255, .78);
+    }
+
+    section {
+      padding: 0 34px 24px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 17px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 24px;
+      border-radius: 2px;
+      background: var(--blue);
+      box-shadow: 0 0 16px rgba(71, 120, 255, .82);
+    }
+
+    .view-all {
+      color: var(--blue-2);
+      font-size: 13px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: 9px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(18, 31, 48, .92), rgba(10, 18, 29, .92));
+      box-shadow: 0 18px 48px rgba(0, 0, 0, .24);
+    }
+
+    .project-card video {
+      height: 152px;
+    }
+
+    .project-card img {
+      display: block;
+      width: 100%;
+      height: 152px;
+      object-fit: cover;
+      background: #05080e;
+    }
+
+    .link-cover {
+      height: 152px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(71, 120, 255, .28), transparent 42%),
+        linear-gradient(135deg, #111d2b, #07101a);
+      color: var(--soft);
+      text-align: center;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .project-cover {
+      position: relative;
+      overflow: hidden;
+      background: #07101a;
+    }
+
+    .project-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(5, 9, 16, .64));
+      pointer-events: none;
+    }
+
+    .add {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 3;
+      width: 25px;
+      height: 25px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(5, 9, 16, .76);
+      color: var(--soft);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .project-body {
+      padding: 14px 14px 13px;
+    }
+
+    .project-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    .project-card p {
+      height: 63px;
+      margin: 0;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.62;
+    }
+
+    .tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag {
+      padding: 5px 8px;
+      border-radius: 5px;
+      color: #aebbd0;
+      border: 1px solid rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .035);
+      font-size: 12px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, .07);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .external-link {
+      display: inline-flex;
+      margin-top: 12px;
+      color: var(--blue-2);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 16px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .22);
+    }
+
+    .dot.active { background: var(--blue); }
+
+    .workflow-wrap {
+      position: relative;
+      padding-bottom: 30px;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 15px;
+      position: relative;
+    }
+
+    .step {
+      position: relative;
+      min-height: 126px;
+      padding: 15px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(18, 31, 48, .92), rgba(10, 18, 29, .9));
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -17px;
+      top: 50px;
+      color: var(--soft);
+      z-index: 2;
+      font-size: 22px;
+    }
+
+    .icon {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      margin-bottom: 13px;
+      background: radial-gradient(circle at 35% 28%, #83a6ff, #315ee5);
+      box-shadow: 0 10px 24px rgba(71, 120, 255, .28);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .step.active {
+      border-color: rgba(71, 120, 255, .95);
+      box-shadow: 0 0 0 1px rgba(71, 120, 255, .45), 0 0 32px rgba(71, 120, 255, .22);
+    }
+
+    .step.active .icon {
+      background: radial-gradient(circle at 30% 22%, #73ffe0, #2472ff);
+    }
+
+    .workflow-panel {
+      position: static;
+      width: 100%;
+      margin-top: 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line-strong);
+      background: rgba(13, 23, 36, .98);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .48);
+      padding: 14px 18px;
+      z-index: 8;
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .workflow-panel h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .workflow-panel p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.76;
+    }
+
+    .tools {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tool {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .035);
+      color: var(--soft);
+      font-size: 11px;
+    }
+
+    .compact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-card {
+      border-radius: 9px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(18, 31, 48, .86), rgba(10, 18, 29, .86));
+      padding: 18px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 10px;
+      font-size: 17px;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.78;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 7px;
+      border: 1px solid var(--line-strong);
+      color: var(--soft);
+      background: rgba(255, 255, 255, .035);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .detail {
+      position: fixed;
+      right: 92px;
+      bottom: 72px;
+      width: 350px;
+      border-radius: 10px;
+      border: 1px solid var(--line-strong);
+      background: rgba(12, 22, 34, .98);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .54);
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px);
+      transition: .18s ease;
+      z-index: 30;
+    }
+
+    .detail.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 26px;
+      height: 26px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .detail h3 {
+      margin: 0 28px 14px 0;
+      font-size: 18px;
+    }
+
+    .detail p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.76;
+    }
+
+    .detail-link {
+      display: none;
+      margin-bottom: 14px;
+      color: var(--blue-2);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .detail-link.show {
+      display: inline-flex;
+    }
+
+    .right-notes {
+      padding: 14px 0 14px 10px;
+    }
+
+    .note {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 16px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .note:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 44px;
+      bottom: -24px;
+      border-left: 1px dashed rgba(142, 166, 204, .38);
+    }
+
+    .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #3d69ff, #76a7ff);
+      box-shadow: 0 0 0 6px rgba(71, 120, 255, .14);
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .note h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .mini-preview {
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 7px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .mini-preview video {
+      height: 72px;
+    }
+
+    .note-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .note-pill {
+      padding: 7px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      color: var(--soft);
+      font-size: 12px;
+    }
+
+    .note-pill.active {
+      border-color: rgba(71, 120, 255, .88);
+      background: rgba(71, 120, 255, .18);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="screen">
+      <aside class="profile glass">
+      <div class="photo-wrap">
+        <img src="assets/profile-photo.jpeg" alt="黄敬杰照片" />
+      </div>
+      <div class="profile-body">
+        <div class="profile-name">黄敬杰</div>
+        <div class="profile-role">AIGC 内容制作 / 视频剪辑<br />游戏短视频 / 现场执行</div>
+        <div class="contact-list">
+          <div><span>✉</span><span>1700814548@qq.com</span></div>
+          <div><span>⌖</span><span>广西 · 柳州</span></div>
+          <div><span>◎</span><span>可远程 / 可出差</span></div>
+        </div>
+        <a class="download" href="resume/黄敬杰简历_优化版_最终稿_v4.docx">↓ 下载简历</a>
+        <div class="save-note">保存候选人简历</div>
+      </div>
+      </aside>
+
+      <main class="main-board glass">
+      <div class="topbar">
+        <div class="brand">黄敬杰 <span>Portfolio</span></div>
+        <nav class="nav">
+          <a class="active" href="#works">作品</a>
+          <a href="#workflow">工作流</a>
+          <a href="#experience">经历</a>
+          <a href="#contact">联系</a>
+        </nav>
+      </div>
+
+      <header class="hero">
+        <div>
+          <h1 class="hero-title">黄敬杰</h1>
+          <div class="hero-subtitle"><b>AIGC</b> 内容制作 / 视频剪辑 / 游戏短视频</div>
+          <p class="hero-copy">把 AI 素材、游戏 IP 与剪辑节奏结合，完成从 Prompt、素材生成到成片发布的内容生产流程，用内容创造价值。</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#works">▶ 查看作品</a>
+            <a class="btn" href="resume/黄敬杰简历_优化版_最终稿_v4.docx">↓ 下载简历</a>
+          </div>
+        </div>
+
+        <div class="hero-player">
+          <video class="hover-video" muted loop playsinline controls preload="metadata" src="assets/dahua-lite-upload.webm"></video>
+          <div class="hover-label">Hover 静音预览 3-5 秒</div>
+          <div class="play-button">▶</div>
+          <div class="player-bottom">
+            <div class="player-tags">
+              <span class="player-tag">50+ 成片</span>
+              <span class="player-tag">大话西游完整成片</span>
+            </div>
+            <div class="player-control"><span>▶</span><span>00:00 / 01:30</span><div class="timeline"><span></span></div><span>▮▮</span><span>⛶</span></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="role-line">
+        <div class="bubble">2</div>
+        <div class="role-label">按岗位查看：</div>
+        <div class="role-switch">
+          <button class="role-btn active" data-role="aigc">AIGC 内容制作</button>
+          <button class="role-btn" data-role="edit">视频剪辑</button>
+          <button class="role-btn" data-role="game">游戏短视频</button>
+          <button class="role-btn" data-role="field">现场执行</button>
+        </div>
+      </div>
+
+      <section id="works">
+        <div class="section-head">
+          <h2 class="section-title">精选项目</h2>
+          <a class="view-all" href="作品预览.html">查看全部作品 →</a>
+        </div>
+        <div class="project-grid" id="projectGrid"></div>
+        <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+      </section>
+
+      <section id="workflow" class="workflow-wrap">
+        <h2 class="section-title">AIGC 工作流</h2>
+        <div class="workflow">
+          <button class="step" data-title="剧本拆解" data-copy="拆解主题与结构，输出分镜脚本。"><span class="icon">▤</span><strong>剧本拆解</strong><span>拆解主题与结构，输出分镜脚本。</span></button>
+          <button class="step" data-title="Prompt 撰写" data-copy="撰写与优化 Prompt，明确风格与镜头需求。"><span class="icon">▧</span><strong>Prompt 撰写</strong><span>撰写与优化 Prompt，明确风格与镜头需求。</span></button>
+          <button class="step active" data-title="AI 素材生成" data-copy="用 AI 工具生成所需画面素材，提前筛选稳定可用镜头。"><span class="icon">AI</span><strong>AI 素材生成</strong><span>生成图片 / 视频 / 音乐等多模态素材。</span></button>
+          <button class="step" data-title="剪辑重组" data-copy="通过镜头重组、节奏重构和音乐点位，把散素材组织成短视频叙事。"><span class="icon">✂</span><strong>剪辑重组</strong><span>剪辑整合素材，搭建叙事节奏。</span></button>
+          <button class="step" data-title="字幕配乐" data-copy="根据平台浏览习惯完成字幕、配乐和基础包装。"><span class="icon">♪</span><strong>字幕配乐</strong><span>适配节奏与信息表达。</span></button>
+          <button class="step" data-title="发布复盘" data-copy="复盘成片观感和素材使用效率，沉淀 Prompt 模板与工作流文档。"><span class="icon">↗</span><strong>发布复盘</strong><span>沉淀经验，支持后续批量生产。</span></button>
+        </div>
+        <div class="workflow-panel" id="workflowPanel">
+          <h3>AI 素材生成</h3>
+          <p>用 AI 工具生成所需画面素材，提前筛选稳定可用镜头。</p>
+          <div class="tools"><span class="tool">Claude</span><span class="tool">Codex</span><span class="tool">LibTV</span><span class="tool">剪映</span><span class="tool">PR</span></div>
+        </div>
+      </section>
+
+      <section id="experience">
+        <div class="section-head">
+          <h2 class="section-title">经历</h2>
+        </div>
+        <div class="compact-grid">
+          <div class="info-card">
+            <h3>网易（广州）｜内容制作实习生</h3>
+            <p>参与 AIGC 内容生产流程搭建，串联剧本、角色设定、素材产出和视频剪辑；累计完成 50+ 条 AIGC 视频制作并在“网易大神”发布。</p>
+          </div>
+          <div class="info-card">
+            <h3>核心能力</h3>
+            <p>Premiere Pro、剪映、Prompt 撰写、AI 素材筛选、剪辑重组、字幕包装、赛事现场执行、DIT 素材整理。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-head">
+          <h2 class="section-title">联系</h2>
+        </div>
+        <div class="info-card">
+          <h3>可投递方向</h3>
+          <p>AIGC 内容制作 / 视频剪辑 / 游戏短视频 / 现场执行。欢迎通过邮箱或电话联系，也可以直接下载简历。</p>
+          <div class="contact-actions">
+            <a class="contact-link" href="mailto:1700814548@qq.com">1700814548@qq.com</a>
+            <a class="contact-link" href="tel:17373834204">17373834204</a>
+            <a class="contact-link" href="resume/黄敬杰简历_优化版_最终稿_v4.docx">下载简历</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+      <aside class="right-notes">
+      <div class="note">
+        <div class="num">1</div>
+        <div>
+          <h3>先看成片</h3>
+          <p>鼠标放到视频上就能预览，不用先跳页面。默认静音，适合快速扫一遍作品。</p>
+          <div class="mini-preview"><video class="hover-video" muted loop playsinline preload="metadata" src="assets/dahua-lite-upload.webm"></video></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <div class="num">2</div>
+        <div>
+          <h3>按岗位看作品</h3>
+          <p>点不同方向，下面三张卡会换成对应作品。比如“视频剪辑”看剪辑案例，“现场执行”看到场证据。</p>
+          <div class="note-pills"><span class="note-pill active">AIGC 内容制作</span><span class="note-pill">视频剪辑</span><span class="note-pill">游戏短视频</span></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <div class="num">3</div>
+        <div>
+          <h3>只放最有用的</h3>
+          <p>首页不堆满 37 个视频，只留 3 个入口：主推、系列、短视频。其他素材放到全部作品页。</p>
+          <div class="note-pills"><span class="note-pill active">主推</span><span class="note-pill">系列</span><span class="note-pill">短视频</span></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <div class="num">4</div>
+        <div>
+          <h3>说明怎么做</h3>
+          <p>点击流程节点，可快速了解候选人在该环节承担的工作、使用工具和交付内容。</p>
+          <div class="note-pills"><span class="note-pill">Prompt</span><span class="note-pill active">AI 素材生成</span><span class="note-pill">剪辑重组</span></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <div class="num">5</div>
+        <div>
+          <h3>展开看细节</h3>
+          <p>点卡片右上角 “+”，查看该项目的职责范围、执行过程和交付结果。</p>
+        </div>
+      </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="detail" id="detail">
+    <button class="close" id="closeDetail" type="button">×</button>
+    <h3 id="detailTitle">项目详情</h3>
+    <p id="detailCopy">项目说明</p>
+    <a class="detail-link" id="detailLink" target="_blank" rel="noreferrer">查看公众号链接 →</a>
+    <div class="player-tags"><span class="player-tag">50+ 成片</span><span class="player-tag">AIGC 工作流</span><span class="player-tag">多 IP</span></div>
+  </div>
+
+  <script>
+    function fitBoard() {
+      const viewport = document.querySelector(".viewport");
+      const screen = document.querySelector(".screen");
+      const scale = Math.min(1, window.innerWidth / 1600);
+      screen.style.setProperty("--board-scale", scale);
+      viewport.style.height = `${screen.offsetHeight * scale}px`;
+    }
+    window.addEventListener("resize", fitBoard);
+    fitBoard();
+
+    document.querySelectorAll(".hover-video").forEach((video) => {
+      video.addEventListener("mouseenter", () => {
+        video.muted = true;
+        video.play().catch(() => {});
+      });
+      video.addEventListener("mouseleave", () => video.pause());
+    });
+
+    const projectGrid = document.querySelector("#projectGrid");
+    const roleProjects = {
+      aigc: [
+        {
+          title: "大话西游 AIGC 完整成片",
+          src: "assets/dahua-lite-upload.webm",
+          desc: "完整展示从 AI 素材生成、素材筛选到剪辑包装的内容生产链路。",
+          tags: ["Prompt", "AI素材", "剪辑重组"],
+          metrics: ["完整成片", "游戏 IP", "主推"],
+          detail: "职责范围包括素材筛选、镜头组织、节奏重构、配乐与字幕包装。该项目作为首页主推作品，用于呈现完整视频交付能力。"
+        },
+        {
+          title: "第五人格系列内容",
+          src: "assets/identityv-lite-upload.webm",
+          desc: "7 集连续内容，突出 AIGC 角色叙事、系列生产和稳定交付。",
+          tags: ["系列内容", "AIGC", "角色叙事"],
+          metrics: ["7 集", "连续内容", "稳定交付"],
+          detail: "围绕《第五人格》题材进行短剧式内容包装，处理 AI 素材的画面衔接与节奏统一。"
+        },
+        {
+          title: "大话西游片段池",
+          src: "assets/我靠百分百概率在游戏封神_ep1_batch4_480p.mp4",
+          desc: "展示素材拆分、片段筛选和从局部素材到完整成片的组织能力。",
+          tags: ["素材筛选", "片段池", "成片整合"],
+          metrics: ["10 段", "480p", "过程素材"],
+          detail: "用于说明完整成片背后的素材池和筛选过程，适合支撑 AIGC 工作流。"
+        }
+      ],
+      edit: [
+        {
+          title: "大话西游完整成片剪辑",
+          src: "assets/dahua-lite-upload.webm",
+          desc: "重点展示镜头组织、节奏重构、字幕配乐和完整交付能力。",
+          tags: ["节奏重构", "字幕包装", "配乐"],
+          metrics: ["完整成片", "剪辑包装", "交付"],
+          detail: "视频剪辑视角下，重点看成片节奏、画面衔接和字幕包装，而不是单纯 AIGC 流程。"
+        },
+        {
+          title: "大话西游片段剪辑样本",
+          src: "assets/我靠百分百概率在游戏封神_ep1_batch8_480p.mp4",
+          desc: "用短片段展示单段素材的节奏处理和画面衔接方式。",
+          tags: ["短片段", "画面衔接", "节奏"],
+          metrics: ["3-5 秒预览", "片段剪辑", "轻量"],
+          detail: "适合做 hover 预览素材，让 HR 快速感受剪辑节奏。"
+        },
+        {
+          title: "柳州二中高考加油宣传片",
+          type: "link",
+          link: "https://mp.weixin.qq.com/s/MIpBCdnHXqQFXw8Jjs0YnA",
+          desc: "对接校方素材，完成主题提炼、剪辑结构、字幕包装和成片交付。",
+          tags: ["宣传片", "校方对接", "剪辑负责"],
+          metrics: ["外部链接", "按时交付", "完整项目"],
+          detail: "该项目用于呈现沟通对接、主题提炼和完整交付能力。微信公众号链接可作为外部作品入口。"
+        }
+      ],
+      game: [
+        {
+          title: "率土短视频精选",
+          src: "assets/sttl-lite-upload.webm",
+          desc: "突出策略游戏叙事、玩家代入感和游戏短视频节奏。",
+          tags: ["游戏 IP", "玩家视角", "节奏剪辑"],
+          metrics: ["短视频", "策略游戏", "节奏"],
+          detail: "游戏短视频视角下优先展示率土，因为它更直接体现游戏题材理解和玩家表达。"
+        },
+        {
+          title: "第五人格系列内容",
+          src: "assets/identityv-lite-upload.webm",
+          desc: "用连续内容展示角色叙事、游戏 IP 包装和系列化产出。",
+          tags: ["第五人格", "系列内容", "角色叙事"],
+          metrics: ["7 集", "连续内容", "IP 包装"],
+          detail: "强调对游戏 IP 的内容二创能力，不只是剪辑单条视频。"
+        },
+        {
+          title: "CS 短视频补充",
+          src: "assets/cs-lite-upload.webm",
+          desc: "补充动作类游戏题材，展示不同游戏类型的画面节奏适配。",
+          tags: ["动作节奏", "补充作品", "游戏短视频"],
+          metrics: ["CS", "短视频", "题材覆盖"],
+          detail: "作为更多题材补充，体现作品覆盖不是单一游戏类型。"
+        }
+      ],
+      field: [
+        {
+          title: "《第五人格》赛事现场执行",
+          type: "image",
+          src: "assets/field-stage.png",
+          desc: "真实线下场地环境，可查看赛事现场布置、链路对接和执行流程相关经历。",
+          tags: ["线下执行", "场地布置", "赛事流程"],
+          metrics: ["真实场地", "设备环境", "执行经验"],
+          detail: "该图片用于呈现线下赛事现场、舞台区域和设备环境，补充说明现场执行经历。"
+        },
+        {
+          title: "赛事入场证 / 到场记录",
+          type: "image",
+          src: "assets/field-card.png",
+          desc: "入场证可作为现场项目经历的补充材料，适合支撑简历里的赛事执行经历。",
+          tags: ["入场证", "现场记录", "执行支持"],
+          metrics: ["2026", "B06", "现场材料"],
+          detail: "该图片放在现场执行视角下，用于补充说明线下到场和项目参与背景。"
+        },
+        {
+          title: "赛事内容素材补充",
+          src: "assets/field-video-lite-upload.webm",
+          desc: "用视频补充现场内容观感，和前两张图片一起形成“到场 + 环境 + 内容”的证据链。",
+          tags: ["视频素材", "现场感", "内容补充"],
+          metrics: ["短视频", "补充", "节奏"],
+          detail: "这张卡作为现场执行的视频补充，后续如果有更直接的导播台、机位、设备照片可以继续替换。"
+        }
+      ]
+    };
+
+    function bindHoverVideos(scope = document) {
+      scope.querySelectorAll(".hover-video").forEach((video) => {
+        video.addEventListener("mouseenter", () => {
+          video.muted = true;
+          video.play().catch(() => {});
+        });
+        video.addEventListener("mouseleave", () => video.pause());
+      });
+    }
+
+    function renderProjects(role) {
+      projectGrid.innerHTML = roleProjects[role].map((item) => `
+        <article class="project-card project-item">
+          <button class="add" data-title="${item.title}" data-copy="${item.detail}" data-link="${item.link || ""}">+</button>
+          <div class="project-cover">${
+            item.type === "image"
+              ? `<img src="${item.src}" alt="${item.title}">`
+              : item.type === "link"
+                ? `<div class="link-cover">柳州二中<br>高考加油宣传片<br><span style="color:#76a7ff;font-size:12px;">微信公众号作品链接</span></div>`
+              : `<video class="hover-video" muted loop playsinline preload="metadata" src="${item.src}"></video>`
+          }</div>
+          <div class="project-body">
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <div class="tags">${item.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div>
+            <div class="metrics">${item.metrics.map((metric) => `<span>${metric}</span>`).join("")}</div>
+            ${item.link ? `<a class="external-link" href="${item.link}" target="_blank" rel="noreferrer">查看公众号链接 →</a>` : ""}
+          </div>
+        </article>
+      `).join("");
+      bindHoverVideos(projectGrid);
+      bindProjectDetails();
+    }
+
+    function bindProjectDetails() {
+      document.querySelectorAll(".add").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelector("#detailTitle").textContent = button.dataset.title;
+          document.querySelector("#detailCopy").textContent = button.dataset.copy;
+          const link = document.querySelector("#detailLink");
+          if (button.dataset.link) {
+            link.href = button.dataset.link;
+            link.classList.add("show");
+          } else {
+            link.removeAttribute("href");
+            link.classList.remove("show");
+          }
+          detail.classList.add("show");
+        });
+      });
+    }
+
+    renderProjects("aigc");
+
+    document.querySelectorAll(".role-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".role-btn").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        renderProjects(button.dataset.role);
+      });
+    });
+
+    const panel = document.querySelector("#workflowPanel");
+    document.querySelectorAll(".step").forEach((step) => {
+      step.addEventListener("click", () => {
+        document.querySelectorAll(".step").forEach((item) => item.classList.remove("active"));
+        step.classList.add("active");
+        panel.querySelector("h3").textContent = step.dataset.title;
+        panel.querySelector("p").textContent = step.dataset.copy;
+      });
+    });
+
+    const detail = document.querySelector("#detail");
+    document.querySelector("#closeDetail").addEventListener("click", () => detail.classList.remove("show"));
+
+    document.querySelectorAll(".nav a").forEach((link) => {
+      link.addEventListener("click", () => {
+        document.querySelectorAll(".nav a").forEach((item) => item.classList.remove("active"));
+        link.classList.add("active");
+      });
+    });
+
+    const profileCard = document.querySelector(".profile");
+    let dragState = null;
+    let profileOffset = 0;
+
+    profileCard.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("a")) return;
+      dragState = {
+        startY: event.clientY,
+        offset: profileOffset
+      };
+      profileCard.classList.add("dragging");
+      profileCard.setPointerCapture(event.pointerId);
+    });
+
+    profileCard.addEventListener("pointermove", (event) => {
+      if (!dragState) return;
+      const delta = event.clientY - dragState.startY;
+      profileOffset = Math.max(-18, Math.min(220, dragState.offset + delta));
+      profileCard.style.setProperty("--profile-offset", `${profileOffset}px`);
+    });
+
+    function stopProfileDrag(event) {
+      if (!dragState) return;
+      dragState = null;
+      profileCard.classList.remove("dragging");
+      try { profileCard.releasePointerCapture(event.pointerId); } catch {}
+    }
+
+    profileCard.addEventListener("pointerup", stopProfileDrag);
+    profileCard.addEventListener("pointercancel", stopProfileDrag);
+  </script>
+</body>
+</html>
+
+
